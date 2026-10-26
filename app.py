@@ -1,5 +1,6 @@
 import random
 import streamlit as st
+# FIX: Moved game logic out of the UI into logic_utils.py; refactored with Claude Code, one function at a time.
 from logic_utils import (
     check_guess,
     get_range_for_difficulty,
@@ -36,6 +37,7 @@ if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
 
 if "attempts" not in st.session_state:
+    # FIX: Start attempts at 0 to match New Game; found by me, fixed with Claude Code so the limit no longer ends the game one guess early.
     st.session_state.attempts = 0
 
 if "score" not in st.session_state:
@@ -49,6 +51,7 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
+# FIX: Claude Code moved these displays into placeholders filled after the submit block, so Attempts left and History are no longer stale.
 # Reserve these spots now; they are filled after the submit block so they show current state.
 info_slot = st.empty()
 debug_slot = st.empty()
@@ -56,6 +59,7 @@ debug_slot = st.empty()
 
 def render_status():
     info_slot.info(
+        # FIX: Range text comes from the difficulty instead of a hardcoded 1-100, changed with Claude Code.
         f"Guess a number between {low} and {high}. "
         f"Attempts left: {attempt_limit - st.session_state.attempts}"
     )
@@ -82,6 +86,7 @@ with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
 if new_game:
+    # FIX: Claude Code made New Game reset score, status and history, and draw the secret from the difficulty range.
     st.session_state.attempts = 0
     st.session_state.score = 0
     st.session_state.status = "playing"
@@ -109,6 +114,7 @@ if submit:
     else:
         st.session_state.history.append(guess_int)
 
+        # FIX: Pass the secret as an int on every attempt; Claude Code removed the even-attempt str() conversion that flipped hints.
         outcome, message = check_guess(guess_int, st.session_state.secret)
 
         if show_hint:
@@ -128,6 +134,7 @@ if submit:
                 f"Final score: {st.session_state.score}"
             )
         else:
+            # FIX: Correct now that attempts starts at 0; the Claude Code fix above made this give the full number of guesses.
             if st.session_state.attempts >= attempt_limit:
                 st.session_state.status = "lost"
                 st.error(

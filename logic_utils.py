@@ -29,6 +29,7 @@ def parse_guess(raw: str, low: int, high: int):
     except Exception:
         return False, None, "That is not a number."
 
+    # FIX: Added the missing range check (105 was accepted) with Claude Code; its tests live in tests/test_game_logic.py.
     if value < low or value > high:
         return False, None, f"Enter a number between {low} and {high}."
 
@@ -44,6 +45,7 @@ def check_guess(guess, secret):
     if guess == secret:
         return "Win", "🎉 Correct!"
 
+    # FIX: Hint messages were swapped; Claude Code corrected them, dropped the str fallback, and moved this function here from app.py.
     if guess > secret:
         return "Too High", "📉 Go LOWER!"
     return "Too Low", "📈 Go HIGHER!"

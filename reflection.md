@@ -59,11 +59,21 @@ Claude code
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 
+Streamlit reruns your entire Python script from top to bottom every time you interact with the app, like clicking a button or typing in a box. Normal variables get wiped and reset on each rerun, so if the game picks a random secret number in a regular variable, it picks a new one every time you click. Session state (st.session_state) is like a small notebook the app keeps between reruns. Anything you store there, like the secret number, the guess history, and attempts left, survives each rerun. The rule of thumb is that anything the app needs to remember goes in session state, and everything else gets recalculated each time.
+
 ---
 
 ## 5. Looking ahead: your developer habits
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
   - This could be a testing habit, a prompting strategy, or a way you used Git.
+
+I want to reuse the habit of recording bugs the first time I run an application, before I start fixing anything. While I played the game, I wrote down what I entered, what I expected, and what actually happened. That gave me a clear list to work from, so I didn’t have to rely on memory. It also helped me notice patterns, like several bugs pointing to the same problem with game state, instead of treating each one as unrelated. Next time, I’ll test the app and log what I find right away, since it makes debugging faster and more organized.
+
 - What is one thing you would do differently next time you work with AI on a coding task?
+
+Next time I would set up and verify my environment before writing or testing any code. I had to set up my virtual environment several times because it wasn’t active in each new terminal, which slowed down my testing. Now I know to activate it, confirm the dependencies are installed, and select the right interpreter in VS Code at the start.
+
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+This project showed me that AI-generated code can look correct and still contain hidden bugs, like reversed hints or state that doesn’t update, so I can’t trust it without testing it. I now see AI as a helpful starting point that I still need to read, run, and question.
